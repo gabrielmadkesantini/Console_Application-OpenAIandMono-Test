@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <StartAction>Project</StartAction>
+    <EnvironmentVariables>
+      <Variable name="OPENAI_KEY" value="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" />
+    </EnvironmentVariables>
+  </PropertyGroup>
+</Project>

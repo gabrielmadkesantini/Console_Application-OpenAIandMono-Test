@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{DAE6AD4E-A22A-4AD4-AE7F-5FDA337EAE7F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="consoleTest/Program.cs">
+    <Files>
+      <File FileName="consoleTest/Program.cs" Line="97" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="consoleTest" expanded="True">
+            <Node name="consoleTest" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.consoleTest PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/home/gabriel/Projects/consoleTest/consoleTest/Program.cs" relfile="consoleTest/Program.cs" line="97" column="1" />
+      <Breakpoint file="/home/gabriel/Projects/consoleTest/consoleTest/Program.cs" relfile="consoleTest/Program.cs" line="96" column="1" />
+      <Breakpoint file="/home/gabriel/Projects/consoleTest/consoleTest/Program.cs" relfile="consoleTest/Program.cs" line="94" column="1" />
+      <Breakpoint file="/home/gabriel/Projects/consoleTest/consoleTest/Program.cs" relfile="consoleTest/Program.cs" line="92" column="1" />
+      <Breakpoint file="/home/gabriel/Projects/consoleTest/consoleTest/Program.cs" relfile="consoleTest/Program.cs" line="91" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
