@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text;
+using System.Configuration;
 
 namespace consoleTest
 {
@@ -125,16 +126,15 @@ namespace consoleTest
 
         public async Task TakeResult()
         {
-            DotNetEnv.Env.Load();
 
-            //var key = Environment.GetEnvironmentVariable("OPENAI_KEY");
-            //Console.WriteLine(key);
+            var key = ConfigurationManager.AppSettings["OPENAI_KEY"];
+            Console.WriteLine(key);
 
 
             var text = Console.ReadLine();
             var question = new InputChatGPTModel(text);
 
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer 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");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
 
             var requestBody = JsonSerializer.Serialize(question);
 
