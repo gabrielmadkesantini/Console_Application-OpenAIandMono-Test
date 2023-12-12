@@ -84,6 +84,8 @@ namespace consoleTest
 
             var key = Environment.GetEnvironmentVariable("OPENAI_KEY");
 
+            Console.WriteLine(key);
+
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
 
             var balance = await _httpClient.GetAsync("https://api.openai.com/dashboard/billing/credit_grants");
