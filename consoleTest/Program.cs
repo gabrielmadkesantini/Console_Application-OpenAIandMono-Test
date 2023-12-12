@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text;
 
 namespace consoleTest
 {
@@ -51,7 +51,7 @@ namespace consoleTest
                 new Message { role = "system", content = "Tentativa de relacionamento com um cliente, com o objetivo de venda." },
                 new Message { role = "system", content = "Response sempre em portuguê-BR" },
                 new Message { role = "system", content = "A útima frase do texto deve ser uma pergunta que nã seja possíel ser respondida apenas com sim ou nã, buscando entender se o cliente possui interesse na aquisiçã de um Software de CRM" },
-                new Message { role = "system", content = "Faç uma abordagem que instigue a pessoa a responder." },
+                new Message { role = "system", content = "Faça uma abordagem que instigue a pessoa a responder." },
                 new Message { role = "system", content = "Nã inclua que seránviado orçmento novamente para o cliente." },
                 new Message { role = "system", content = "Nã informe condiçõs comerciais propostas." },
                 new Message { role = "system", content = "Nã inclua comentáios negativos ou ofensivos, seja do cliente ou de quem fez a anotaçã." },
@@ -77,18 +77,66 @@ namespace consoleTest
             _httpClient = new HttpClient();
         }
 
-        public async Task TakeResult()
+
+        public async Task TakeCurrentBalance()
         {
             DotNetEnv.Env.Load();
 
             var key = Environment.GetEnvironmentVariable("OPENAI_KEY");
 
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
+
+            var balance = await _httpClient.GetAsync("https://api.openai.com/dashboard/billing/credit_grants");
+
+            var responseBody = await balance.Content.ReadAsStringAsync();
+            var responseObject = JsonSerializer.Deserialize<Grant>(responseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            Console.WriteLine(responseBody);
+        }
+
+        public class Grant
+        {
+            public string Object { get; set; }
+            public List<object> Data { get; set; }
+        }
+
+        public class CreditSummary
+        {
+            public string Object { get; set; }
+            public double TotalGranted { get; set; }
+            public double TotalUsed { get; set; }
+            public double TotalAvailable { get; set; }
+            public Grant Grants { get; set; }
+        }
+
+        public class RootObject
+        {
+            public string Object { get; set; }
+            public double TotalGranted { get; set; }
+            public double TotalUsed { get; set; }
+            public double TotalAvailable { get; set; }
+            public Grant Grants { get; set; }
+        }
+
+        public async Task TakeResult()
+        {
+            DotNetEnv.Env.Load();
+
+            //var key = Environment.GetEnvironmentVariable("OPENAI_KEY");
+            //Console.WriteLine(key);
+
+
             var text = Console.ReadLine();
             var question = new InputChatGPTModel(text);
 
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer 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");
 
             var requestBody = JsonSerializer.Serialize(question);
+
+
             var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
             var completionResponse = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", content);
@@ -109,6 +157,8 @@ namespace consoleTest
         {
             var questionOpenAI = new QuestionOpenAi(new HttpClient());
             await questionOpenAI.TakeResult();
+            //await questionOpenAI.TakeCurrentBalance();
         }
     }
+
 }
