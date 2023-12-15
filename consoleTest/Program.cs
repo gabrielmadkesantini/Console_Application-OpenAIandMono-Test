@@ -69,6 +69,13 @@ namespace consoleTest
         public int max_tokens { get; set; }
     }
 
+    public class TokensVaue
+    {
+        public int InputTokens { get; set; }
+        public int OutputTokens { get; set; }
+
+    }
+
     public class QuestionOpenAi
     {
         private readonly HttpClient _httpClient;
@@ -76,80 +83,49 @@ namespace consoleTest
         public QuestionOpenAi(HttpClient httpClient)
         {
             _httpClient = new HttpClient();
-        }
-
-
-        public async Task TakeCurrentBalance()
-        {
-            DotNetEnv.Env.Load();
-
-            var key = Environment.GetEnvironmentVariable("OPENAI_KEY");
-
-            Console.WriteLine(key);
-
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
-
-            var balance = await _httpClient.GetAsync("https://api.openai.com/dashboard/billing/credit_grants");
-
-            var responseBody = await balance.Content.ReadAsStringAsync();
-            var responseObject = JsonSerializer.Deserialize<Grant>(responseBody, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-
-            Console.WriteLine(responseBody);
-        }
-
-        public class Grant
-        {
-            public string Object { get; set; }
-            public List<object> Data { get; set; }
-        }
-
-        public class CreditSummary
-        {
-            public string Object { get; set; }
-            public double TotalGranted { get; set; }
-            public double TotalUsed { get; set; }
-            public double TotalAvailable { get; set; }
-            public Grant Grants { get; set; }
-        }
-
-        public class RootObject
-        {
-            public string Object { get; set; }
-            public double TotalGranted { get; set; }
-            public double TotalUsed { get; set; }
-            public double TotalAvailable { get; set; }
-            public Grant Grants { get; set; }
-        }
-
-        public async Task TakeResult()
-        {
-
             var key = ConfigurationManager.AppSettings["OPENAI_KEY"];
-            Console.WriteLine(key);
-
-
-            var text = Console.ReadLine();
-            var question = new InputChatGPTModel(text);
-
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
+        }
 
-            var requestBody = JsonSerializer.Serialize(question);
+
+        public async Task<TokensVaue> TakeResult()
+        {
+
+                var text = Console.ReadLine();
+                var question = new InputChatGPTModel(text);
+
+               
+
+                var requestBody = JsonSerializer.Serialize(question);
 
 
-            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
-            var completionResponse = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", content);
+                var completionResponse = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", content);
 
-            var responseBody = await completionResponse.Content.ReadAsStringAsync();
-            var responseObject = JsonSerializer.Deserialize<OutputChatGPTModel>(responseBody, new JsonSerializerOptions
+                var responseBody = await completionResponse.Content.ReadAsStringAsync();
+                var responseObject = JsonSerializer.Deserialize<OutputChatGPTModel>(responseBody, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+            var answer = new TokensVaue()
             {
-                PropertyNameCaseInsensitive = true
-            });
+                InputTokens = responseObject.usage.prompt_tokens,
+                OutputTokens = responseObject.usage.completion_tokens,
+            };
 
-            Console.Write(responseObject.choices.First().message.content);
+               
+
+
+
+
+            Console.WriteLine(responseObject.usage.total_tokens);
+            Console.WriteLine(responseObject.usage.prompt_tokens);
+            Console.WriteLine(responseObject.usage.completion_tokens);
+
+
+            return answer;
         }
     }
 
@@ -157,9 +133,39 @@ namespace consoleTest
     {
         public static async Task Main()
         {
+            var inputValue = 0;
+            var outputValue = 0;
+            double price = 0;
+
             var questionOpenAI = new QuestionOpenAi(new HttpClient());
-            await questionOpenAI.TakeResult();
-            //await questionOpenAI.TakeCurrentBalance();
+            for (int i = 0; i <= 20; i++)
+            { 
+                var result = await questionOpenAI.TakeResult();
+
+                inputValue += result.InputTokens;
+                outputValue += result.OutputTokens;
+
+                Console.WriteLine($"Quantia de tokens do prompt {inputValue}");
+                Console.WriteLine($"Quantia de tokens do output {outputValue}");
+
+
+                if (inputValue +  >= 1000)
+                {
+                    price += 0.03;
+                    inputValue -= 1000;
+                    Console.WriteLine($"You have been charge U${price} 'till now");
+                }
+
+                if (outputValue >= 1000)
+                {
+                    price += 0.06;
+                    outputValue -= 1000;
+                    Console.WriteLine($"You have been charge U${price} 'till now");
+                }
+
+
+            }
+
         }
     }
 
