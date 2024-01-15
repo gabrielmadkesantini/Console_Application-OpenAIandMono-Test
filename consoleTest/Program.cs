@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text;
 using System.Configuration;
+using Microsoft.DeepDev;
 
 namespace consoleTest
 {
@@ -115,15 +116,26 @@ namespace consoleTest
                 OutputTokens = responseObject.usage.completion_tokens,
             };
 
-               
 
 
+            var IM_START = "<|im_start|>";
+            var IM_END = "<|im_end|>";
 
+            var specialTokens = new Dictionary<string, int>{
+                                            { IM_START, 100264},
+                                            { IM_END, 100265},
+                                        };
+            var tokenizer = await TokenizerBuilder.CreateByModelNameAsync("gpt-4", specialTokens);
 
-            Console.WriteLine(responseObject.usage.total_tokens);
-            Console.WriteLine(responseObject.usage.prompt_tokens);
-            Console.WriteLine(responseObject.usage.completion_tokens);
+            var text_propt = $"<|im_start|>{responseObject.choices.First().message.content}<|im_end|>";
+            var encoded = tokenizer.Encode(text_propt, new HashSet<string>(specialTokens.Keys));
+            Console.WriteLine(encoded.Count);
 
+            var decoded = tokenizer.Decode(encoded.ToArray());
+            Console.WriteLine(decoded);
+            //Console.WriteLine(responseObject.usage.total_tokens);
+            //Console.WriteLine(responseObject.usage.prompt_tokens);
+            //Console.WriteLine(responseObject.usage.completion_tokens);
 
             return answer;
         }
@@ -149,7 +161,7 @@ namespace consoleTest
                 Console.WriteLine($"Quantia de tokens do output {outputValue}");
 
 
-                if (inputValue +  >= 1000)
+                if (inputValue >= 1000)
                 {
                     price += 0.03;
                     inputValue -= 1000;

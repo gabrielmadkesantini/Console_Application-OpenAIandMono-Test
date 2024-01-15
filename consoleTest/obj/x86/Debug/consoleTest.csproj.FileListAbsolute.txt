@@ -259,9 +259,9 @@ C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\bi
 C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\bin\Debug\Sprache.xml
 C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\bin\Debug\Microsoft.Extensions.Configuration.xml
 C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\obj\x86\Debug\consoleTest.csproj.AssemblyReference.cache
-C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\obj\x86\Debug\consoleTest.csproj.SuggestedBindingRedirects.cache
-C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\obj\x86\Debug\consoleTest.exe.config
 C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\obj\x86\Debug\consoleTest.csproj.CoreCompileInputs.cache
 C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\obj\x86\Debug\consoleTest.csproj.CopyComplete
 C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\obj\x86\Debug\consoleTest.exe
 C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\obj\x86\Debug\consoleTest.pdb
+C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\bin\Debug\Microsoft.DeepDev.TokenizerLib.dll
+C:\Users\eden\source\repos\Console_Application-OpenAIandMono-Test\consoleTest\bin\Debug\Microsoft.DeepDev.TokenizerLib.pdb
